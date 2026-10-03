@@ -1,0 +1,7 @@
+tests
+data/source
+.github
+scripts
+**/node_modules
+frontend/build
+.env
