@@ -159,5 +159,10 @@ def rule_parse(message: str, index: LocationIndex, hint_state: Optional[str] = N
         m = re.search(r"\b(?:in|of|for|at|about)\s+([a-z][a-z .'-]{2,40})$", text.strip(" ?!."))
         leftover = [w for w in (m.group(1).split() if m else [])
                     if w not in {"the", "state", "district", "india", "all", "whole", "country", "overall"}]
-        out["locations"] = [" ".join(leftover)] if leftover else ["India"]
+        if leftover:
+            out["locations"] = [" ".join(leftover)]
+        elif re.search(r"\b(india|overall|whole|country|nationwide|all)\b", text):
+            out["locations"] = ["India"]
+        # else: no place named ("and its recharge?") -> leave empty so the
+        # service can reuse the place from the conversation context.
     return out
