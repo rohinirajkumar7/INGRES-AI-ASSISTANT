@@ -224,6 +224,8 @@ class ChatService:
                 loc = (Location("district", ctx.get("state"), ctx["district"]) if ctx.get("district")
                        else Location("state", ctx["state"]))
                 locs = [loc]
+            if not locs and not missing and metric != "overview":
+                locs = self._resolve(["India"], ctx)     # "recharge" alone -> all-India figure
             if not locs:
                 return self._not_found(missing) if missing else self._ask_place()
             return self._lookup(locs[0], metric)
